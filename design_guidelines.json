@@ -1,0 +1,100 @@
+{
+  "project_name": "Lucy's Tech Trivia Game",
+  "theme": "Dark retro arcade theme",
+  "typography": {
+    "headings": {
+      "fontFamily": "'Press Start 2P', system-ui, monospace",
+      "import": "@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');",
+      "styles": "Used for the Main Title, Score, and Countdown Timer. Apply subtle text-shadow to create a glowing neon effect. DO NOT exceed text-4xl on mobile for headings to prevent layout breaking.",
+      "tracking": "tracking-tight"
+    },
+    "body": {
+      "fontFamily": "'Fira Code', 'Space Mono', monospace",
+      "import": "@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');",
+      "styles": "Used for Questions, Answers, Explanations, and Usernames. Clean and readable monospace font to match the 'tech' vibe while remaining highly accessible."
+    }
+  },
+  "colors": {
+    "background": {
+      "primary": "#050505",
+      "panel": "#0B1020"
+    },
+    "accents": {
+      "cyan": "#00F0FF",
+      "purple": "#B026FF",
+      "laser_green": "#00FF41",
+      "electric_red": "#FF003C"
+    },
+    "text": {
+      "primary": "#F6F7FF",
+      "muted": "#A1A1AA"
+    },
+    "border": {
+      "default": "#3F3F46"
+    }
+  },
+  "visual_enhancers": {
+    "borders": "Thick pixel borders. Use standard Tailwind border-4 or unblurred box-shadow offsets to maintain the chunky arcade look. E.g., border-4 border-purple-500.",
+    "glow_effects": "Use multiple layered text-shadows or box-shadows with increasing blur for neon depth. Example: drop-shadow-[0_0_15px_rgba(0,240,255,0.5)].",
+    "scanlines": "Apply a subtle CSS pseudo-element over the main game container with repeating-linear-gradient to simulate CRT screen scanlines. mix-blend-mode: soft-light, opacity: 15%.",
+    "surface": "Solid background for readability. NEVER use complete transparent background in any surface that has content under it."
+  },
+  "grids_layouts": {
+    "container": "Center the game in a compact panel (max-w-2xl or max-w-3xl). The wrapper should use flex flex-col items-center justify-center min-h-screen.",
+    "panel": "A heavily styled 'arcade cabinet' screen panel. Needs generous internal padding (p-6 to p-12) to prevent text collision and maintain breathing room.",
+    "question_screen": "Stack layout: Header (Score & Timer), Question Box, 2x2 Grid for Answer Buttons (on md+ viewports) and 1 column stacked on mobile."
+  },
+  "components": {
+    "button": {
+      "default": "Chunky, solid border (border-4 border-purple-500/40), bg-[#0B1020], text-white. Font: Fira Code.",
+      "hover": "Increase border opacity (border-purple-500), add box-shadow neon glow, slightly translate up (-translate-y-1).",
+      "correct": "border-green-500 bg-green-500/10 text-green-400 [box-shadow:0_0_15px_rgba(0,255,65,0.5)]",
+      "incorrect": "border-red-500 bg-red-500/10 text-red-400 [box-shadow:0_0_15px_rgba(255,0,60,0.5)]"
+    },
+    "timer": {
+      "default": "Font: Press Start 2P, Color: Cyan.",
+      "warning": "When time < 10s, pulse animation and change Color: Electric Red (#FF003C)."
+    },
+    "panel_card": {
+      "structure": "border-4 border-cyan-500/50 bg-[#0B1020] shadow-[0_0_30px_rgba(0,240,255,0.15)] rounded-none relative overflow-hidden"
+    },
+    "inputs": {
+      "text": "For username field: chunky input, border-2 border-purple-500 bg-transparent text-white focus:outline-none focus:border-cyan-500 focus:shadow-[0_0_10px_rgba(0,240,255,0.5)] px-4 py-3"
+    }
+  },
+  "motion": {
+    "buttons": "Subtle scale up on hover. transition-transform transition-shadow duration-200. NO 'transition-all'.",
+    "timer": "Keyframe pulse animation for the final 10 seconds. 'animate-pulse'.",
+    "screen_transition": "Fade in on screen change (opacity transition over 300ms) to prevent jarring snap-cuts."
+  },
+  "accessibility": {
+    "contrast": "Ensure Q&A text has minimum 4.5:1 contrast against panel backgrounds.",
+    "motion": "Respect prefers-reduced-motion for timer pulses and transitions.",
+    "focus": "All interactive elements MUST have visible focus states (focus:ring-2 focus:ring-cyan-500 focus:outline-none)."
+  },
+  "media": {
+    "image_urls": [
+      {
+        "url": "https://images.unsplash.com/photo-1572289758057-3e0f4327833b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbmVvbiUyMHJldHJvJTIwYXJjYWRlJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3OTExODgzOTR8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Retro Arcade cabinet",
+        "category": "background_reference",
+        "instruction": "Use as a deeply blurred (backdrop-blur-[100px] or opacity-20) full-screen background behind the main game panel to add atmosphere. Do NOT use as the direct background for text."
+      }
+    ]
+  },
+  "instructions_to_main_agent": {
+    "tech_stack": "React, Tailwind CSS. Use .js extensions for components (NO .tsx files).",
+    "testing": "All interactive and key informational elements MUST include a `data-testid` attribute (e.g., data-testid='username-input', data-testid='start-game-btn', data-testid='answer-button-0', data-testid='score-display').",
+    "gameplay_logic": "Local state only. 10 hardcoded questions. 30s timer per question. Show answer state (correct/incorrect) and explanation upon selection or timeout. 3 second delay before auto-advancing to the next question. Calculate total score at end.",
+    "modularity": "Structure components modularly (e.g., StartScreen, GameScreen, ResultScreen) so the design can be reused for a multiplayer version later."
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms.",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text.",
+    "Create depth through layered design elements with z-index hierarchy and box-shadow glows (neon effect).",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Every interaction needs micro-animations - hover states, click scales, transitions.",
+    "NEVER use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons.",
+    "DO NOT use complete transparent background in any surface that has content under it."
+  ]
+}
